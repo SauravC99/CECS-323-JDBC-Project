@@ -25,7 +25,7 @@ public class Menu {
         
         if (choice == 1) {
             try {
-                String st = "select GROUPNAME, HEADWRITER, YEARFORMED, SUBJECT from WRITINGGROUP";
+                String st = "select GroupName, HeadWriter, YearFormed, Subject from WRITINGGROUP";
                 pstmt = conn.prepareStatement(st);
                 ResultSet results = pstmt.executeQuery();
                 ResultSetMetaData rsmd = results.getMetaData();
@@ -45,6 +45,42 @@ public class Menu {
                 String input = scan.next();
                 
                 String st = "SELECT GroupName, HeadWriter, YearFormed, Subject FROM WRITINGGROUP WHERE GroupName = ?";
+                pstmt = conn.prepareStatement(st);
+                pstmt.setString(1, input);
+                
+                ResultSet results = pstmt.executeQuery();
+                ResultSetMetaData rsmd = results.getMetaData();
+                
+                printTable(results, rsmd);
+                results.close();
+                pstmt.close();
+            }
+            catch (SQLException sqlExcept) {
+                sqlExcept.printStackTrace();
+            }
+        }
+        if (choice == 3) {
+            try {
+                String st = "select PublisherName, PublisherAddress, PublisherPhone, PublisherEmail from PUBLISHER";
+                pstmt = conn.prepareStatement(st);
+                ResultSet results = pstmt.executeQuery();
+                ResultSetMetaData rsmd = results.getMetaData();
+                
+                printTable(results, rsmd);
+                
+                results.close();
+                pstmt.close();
+            }
+            catch (SQLException sqlExcept) {
+                sqlExcept.printStackTrace();
+            }
+        }
+        if (choice == 4) {
+            try {
+                System.out.println("Which Publisher would you like to see?");
+                String input = scan.next();
+                
+                String st = "SELECT PublisherName, PublisherAddress, PublisherPhone, PublisherEmail FROM PUBLISHER WHERE PublisherName = ?";
                 pstmt = conn.prepareStatement(st);
                 pstmt.setString(1, input);
                 
@@ -91,5 +127,19 @@ public class Menu {
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
         }
+    }
+    public static int getSize(ResultSet results) {
+        try {
+            ResultSet temp = results;
+            int count = 0;
+            while (temp.next()) {
+                count += 1;
+            }
+            return count;
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+        return 0;
     }
 }
