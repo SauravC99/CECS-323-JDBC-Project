@@ -31,8 +31,8 @@ public class Menu {
             stmt = conn.createStatement();
             ResultSet results = stmt.executeQuery("select * from " + tableName);
             ResultSetMetaData rsmd = results.getMetaData();
-            int numberCols = rsmd.getColumnCount();
-            for (int i=1; i<=numberCols; i++) {
+            int col = rsmd.getColumnCount();
+            for (int i = 1; i <= col; i++) {
                 //print Column Names
                 System.out.print(rsmd.getColumnLabel(i)+"\t\t");
             }
@@ -41,11 +41,11 @@ public class Menu {
 
             while(results.next())
             {
-                //int id = results.getInt(1);
-                String id = results.getString(2);
-                String restName = results.getString(2);
-                String cityName = results.getString(3);
-                System.out.println(id + "\t\t" + restName + "\t\t" + cityName);
+                String groupName = results.getString(1);
+                String headWriter = results.getString(2);
+                String yearFormed = results.getString(3);
+                String subject = results.getString(4);
+                System.out.println(groupName + "\t\t" + headWriter + "\t\t" + yearFormed + "\t\t" + subject);
             }
             results.close();
             stmt.close();
