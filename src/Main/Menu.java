@@ -5,17 +5,14 @@ import java.sql.*;
 
 public class Menu {
     public static String dbURL = "jdbc:derby://localhost:1527/JDBC Project";
-    //private static String tableName = "";
     // jdbc Connection
     private static Connection conn = null;
-    private static Statement stmt = null;
-    private static PreparedStatement pstmt;
+    private static PreparedStatement pstmt = null;
     
     public static void main(String[] args) {
         //Start the connection to database
         try {
             conn = DriverManager.getConnection(dbURL);
-            //stmt = conn.createStatement();
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
@@ -23,18 +20,7 @@ public class Menu {
         
         int choice;
         Scanner scan = new Scanner(System.in);
-
-        System.out.println("What would you like to do?");
-        System.out.println("1. List all writing groups");
-        System.out.println("2. Specify a writing group and list all the data");
-        System.out.println("3. List all publishers");
-        System.out.println("4. Specify a publisher and list all the data");
-        System.out.println("5. List all book titles");
-        System.out.println("6. Specify a book and list all the data");
-        System.out.println("7. Insert a new book");
-        System.out.println("8. Insert a new publisher and update books");
-        System.out.println("9. Remove a book");
-
+        printMenu();
         choice = scan.nextInt();
         
         if (choice == 1) {
@@ -73,6 +59,18 @@ public class Menu {
                 sqlExcept.printStackTrace();
             }
         }
+    }
+    public static void printMenu() {
+        System.out.println("What would you like to do?");
+        System.out.println("1. List all writing groups");
+        System.out.println("2. Specify a writing group and list all the data");
+        System.out.println("3. List all publishers");
+        System.out.println("4. Specify a publisher and list all the data");
+        System.out.println("5. List all book titles");
+        System.out.println("6. Specify a book and list all the data");
+        System.out.println("7. Insert a new book");
+        System.out.println("8. Insert a new publisher and update books");
+        System.out.println("9. Remove a book");
     }
     public static void printTable(ResultSet results, ResultSetMetaData rsmd) {
         try {
