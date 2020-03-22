@@ -8,6 +8,7 @@ public class Menu {
     // jdbc Connection
     private static Connection conn = null;
     private static PreparedStatement pstmt = null;
+    public static Scanner scan = new Scanner(System.in);
     
     public static void main(String[] args) {
         //Start the connection to database
@@ -19,83 +20,23 @@ public class Menu {
         }
         
         int choice;
-        Scanner scan = new Scanner(System.in);
         printMenu();
         choice = scan.nextInt();
         
         if (choice == 1) {
-            try {
-                String st = "select GroupName, HeadWriter, YearFormed, Subject from WRITINGGROUP";
-                pstmt = conn.prepareStatement(st);
-                ResultSet results = pstmt.executeQuery();
-                ResultSetMetaData rsmd = results.getMetaData();
-                
-                printTable(results, rsmd);
-                
-                results.close();
-                pstmt.close();
-            }
-            catch (SQLException sqlExcept) {
-                sqlExcept.printStackTrace();
-            }
+            listAllWritingGroups();
         }
         if (choice == 2) {
-            try {
-                System.out.println("Which Writing Group would you like to see?");
-                String input = scan.next();
-                
-                String st = "SELECT GroupName, HeadWriter, YearFormed, Subject FROM WRITINGGROUP WHERE GroupName = ?";
-                pstmt = conn.prepareStatement(st);
-                pstmt.setString(1, input);
-                
-                ResultSet results = pstmt.executeQuery();
-                ResultSetMetaData rsmd = results.getMetaData();
-                
-                printTable(results, rsmd);
-                results.close();
-                pstmt.close();
-            }
-            catch (SQLException sqlExcept) {
-                sqlExcept.printStackTrace();
-            }
+            listSpecificWritingGroups();
         }
         if (choice == 3) {
-            try {
-                String st = "select PublisherName, PublisherAddress, PublisherPhone, PublisherEmail from PUBLISHER";
-                pstmt = conn.prepareStatement(st);
-                ResultSet results = pstmt.executeQuery();
-                ResultSetMetaData rsmd = results.getMetaData();
-                
-                printTable(results, rsmd);
-                
-                results.close();
-                pstmt.close();
-            }
-            catch (SQLException sqlExcept) {
-                sqlExcept.printStackTrace();
-            }
+            listAllPublishers();
         }
         if (choice == 4) {
-            try {
-                System.out.println("Which Publisher would you like to see?");
-                String input = scan.next();
-                
-                String st = "SELECT PublisherName, PublisherAddress, PublisherPhone, PublisherEmail FROM PUBLISHER WHERE PublisherName = ?";
-                pstmt = conn.prepareStatement(st);
-                pstmt.setString(1, input);
-                
-                ResultSet results = pstmt.executeQuery();
-                ResultSetMetaData rsmd = results.getMetaData();
-                
-                printTable(results, rsmd);
-                results.close();
-                pstmt.close();
-            }
-            catch (SQLException sqlExcept) {
-                sqlExcept.printStackTrace();
-            }
+            listSpecificPublishers();
         }
     }
+    
     public static void printMenu() {
         System.out.println("What would you like to do?");
         System.out.println("1. List all writing groups");
@@ -108,6 +49,7 @@ public class Menu {
         System.out.println("8. Insert a new publisher and update books");
         System.out.println("9. Remove a book");
     }
+    
     public static void printTable(ResultSet results, ResultSetMetaData rsmd) {
         try {
             int col = rsmd.getColumnCount();
@@ -128,6 +70,8 @@ public class Menu {
             sqlExcept.printStackTrace();
         }
     }
+    
+    //Not used yet
     public static int getSize(ResultSet results) {
         try {
             ResultSet temp = results;
@@ -141,5 +85,81 @@ public class Menu {
             sqlExcept.printStackTrace();
         }
         return 0;
+    }
+    
+    public static void listAllWritingGroups() {
+        try {
+            String st = "select GroupName, HeadWriter, YearFormed, Subject from WRITINGGROUP";
+            pstmt = conn.prepareStatement(st);
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+
+            printTable(results, rsmd);
+            
+            results.close();
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+    
+    public static void listSpecificWritingGroups() {
+        try {
+            System.out.println("Which Writing Group would you like to see?");
+            String input = scan.next();
+
+            String st = "SELECT GroupName, HeadWriter, YearFormed, Subject FROM WRITINGGROUP WHERE GroupName = ?";
+            pstmt = conn.prepareStatement(st);
+            pstmt.setString(1, input);
+
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+
+            printTable(results, rsmd);
+            results.close();
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+    
+    public static void listAllPublishers() {
+        try {
+            String st = "select PublisherName, PublisherAddress, PublisherPhone, PublisherEmail from PUBLISHER";
+            pstmt = conn.prepareStatement(st);
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+
+            printTable(results, rsmd);
+
+            results.close();
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+    
+    public static void listSpecificPublishers() {
+        try {
+            System.out.println("Which Publisher would you like to see?");
+            String input = scan.next();
+
+            String st = "SELECT PublisherName, PublisherAddress, PublisherPhone, PublisherEmail FROM PUBLISHER WHERE PublisherName = ?";
+            pstmt = conn.prepareStatement(st);
+            pstmt.setString(1, input);
+
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+
+            printTable(results, rsmd);
+            results.close();
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
     }
 }
