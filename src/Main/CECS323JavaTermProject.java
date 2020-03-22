@@ -3,7 +3,7 @@ package Main;
 import java.util.Scanner;
 import java.sql.*;
 
-public class Menu {
+public class CECS323JavaTermProject {
     public static String dbURL = "jdbc:derby://localhost:1527/JDBC Project";
     // jdbc Connection
     private static Connection conn = null;
