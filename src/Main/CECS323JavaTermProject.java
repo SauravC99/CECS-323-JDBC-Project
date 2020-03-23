@@ -99,6 +99,7 @@ public class CECS323JavaTermProject {
                 choice = scan.nextInt();
             }
         }
+        scan.close();
         System.out.println("Goodbye!");
     }
     
@@ -258,10 +259,13 @@ public class CECS323JavaTermProject {
     }
     
     public static void listSpecificPublishers() {
+        
+        Scanner publisherScanner = new Scanner(System.in);
+        
         System.out.println("You've selected: List a specific publisher. \n");
         try {
             System.out.println("Which Publisher would you like to see?");
-            String input = scan.next();
+            String input = publisherScanner.nextLine();
 
             String st = "SELECT PublisherName, PublisherAddress, PublisherPhone, PublisherEmail FROM PUBLISHER WHERE PublisherName = ?";
             //STEP 4: Execute a query
@@ -304,32 +308,40 @@ public class CECS323JavaTermProject {
     }
     
     public static void listSpecifiedBook() {
+        
+        Scanner bookScanner = new Scanner(System.in);
+        
         System.out.println("You've selected: List all a specific Book Title. \n");
         try {
             System.out.println("Which book would you like to see?");
-            String input = scan.next();
-
-            String st = "SELECT groupName, bookTitle, yearPublished, numberPages, publisherName FROM Book WHERE BookTitle = ?";
+            String bookName = bookScanner.nextLine();
+            
+            System.out.println("Which writing group is the book from?");
+            String specificPublisher = bookScanner.nextLine();
+            
+            String st = "SELECT groupName, bookTitle, yearPublished, numberPages FROM Book LEFT OUTER JOIN WritingGroup using (groupName) WHERE bookTitle = ? AND groupName = ?";
 
             //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
-            pstmt.setString(1, input);
+            pstmt.setString(1, bookName);
+            pstmt.setString(2, specificPublisher);
 
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
-            printTable(results, rsmd, true);
+            printTable(results, rsmd, false);
             System.out.println(" ------------------------------------------------- \n");
 
             //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
+            bookScanner.close();
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
         }
     }
-
+        
     public static void addANewBook() {
         System.out.println("You've selected: Add a new Book. \n");
         try {
@@ -430,6 +442,7 @@ public class CECS323JavaTermProject {
   
     
     public static void removeBook() {
+        Scanner in = new Scanner(System.in);
         System.out.println("You've selected: Remove a book. \n");
         try {
             System.out.println("Here are the books:");
@@ -448,7 +461,7 @@ public class CECS323JavaTermProject {
             }
             
             System.out.println("\nWhich Book would you like to remove?");
-            String input = scan.next();
+            String input = in.nextLine();
             
             st = "delete from BOOK where BookTitle = ?";
             
@@ -476,6 +489,7 @@ public class CECS323JavaTermProject {
             //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
+            in.close();
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
