@@ -73,7 +73,7 @@ public class CECS323JavaTermProject {
             addANewBook();
         }
         if (choice == 8) {
-            
+            insertPublisherAndUpdateBooks();
         }
         if (choice == 9) {
             removeBook();
@@ -321,6 +321,55 @@ public class CECS323JavaTermProject {
             sqlExcept.printStackTrace();
         }
     }
+    
+        public static void insertPublisherAndUpdateBooks() {
+        System.out.println("You've selected: Insert a new publisher and update books");
+        try {
+            Scanner in = new Scanner(System.in);
+            
+            System.out.println("Enter new publisher name: ");
+            String publisherName = in.nextLine();
+            
+            System.out.println("Enter new publisher address: ");
+            String publisherAddress = in.nextLine();
+            
+            System.out.println("Enter new publisher phone: ");
+            String publisherPhone = in.nextLine();
+            
+            System.out.println("Enter new publisher email: ");
+            String publisherEmail = in.nextLine();
+            
+            String st = "INSERT INTO Publisher (publisherName, publisherAddress, publisherPhone, publisherEmail) VALUES (?, ?, ?, ?)";
+            
+            pstmt = conn.prepareStatement(st);
+            
+            pstmt.setString(1, publisherName);
+            pstmt.setString(2, publisherAddress);
+            pstmt.setString(3, publisherPhone);
+            pstmt.setString(4, publisherEmail);
+            
+            pstmt.executeUpdate();
+            
+            System.out.println("Enter old publisher: ");
+            String oldPublisher = in.nextLine();
+            
+            st = "UPDATE Book SET publisherName = ? WHERE publisherName = ?";
+            
+            pstmt = conn.prepareStatement(st);
+            
+            pstmt.setString(1, publisherName);
+            pstmt.setString(2, oldPublisher);
+            
+            
+            pstmt.executeUpdate();
+            
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+  
     
     public static void removeBook() {
         System.out.println("You've selected: Remove a book. \n");
