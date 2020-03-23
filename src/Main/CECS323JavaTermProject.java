@@ -1,18 +1,42 @@
 package Main;
 
+/*
+* CECS 323: JDBC Project
+* Rachel Pai (015555603)
+* Saurav Chhapawala (016859360)
+* Marjorie Baloro ()
+* Due date: March 23, 2020
+* */
+
 import java.util.Scanner;
 import java.sql.*;
 
 public class CECS323JavaTermProject {
-    public static String dbURL = "jdbc:derby://localhost:1527/JDBC Project";
+    //  Database credentials
+    static String USER;
+    static String PASS;
+    static String DBNAME;
+    //This is the specification for the printout that I'm doing:
+    //each % denotes the start of a new field.
+    //The - denotes left justification.
+    //The number indicates how wide to make the field.
+    //The "s" denotes that it's a string.  All of our output in this test are
+    //strings, but that won't always be the case.
+    //static final String displayFormat="%-5s%-15s%-15s%-15s\n";
+    // JDBC driver name and database URL
+    
+    public static Scanner scan = new Scanner(System.in);
     // jdbc Connection
+    public static String dbURL = "jdbc:derby://localhost:1527/JDBC Project";
+    //Step 1: Start the connection
     private static Connection conn = null;
     private static PreparedStatement pstmt = null;
-    public static Scanner scan = new Scanner(System.in);
     
     public static void main(String[] args) {
         //Start the connection to database
         try {
+            //STEP 3: Open the connection
+            System.out.println("Connecting to database...");
             conn = DriverManager.getConnection(dbURL);
         }
         catch (SQLException sqlExcept) {
@@ -57,6 +81,7 @@ public class CECS323JavaTermProject {
                 //print Column Names
                 System.out.print(rsmd.getColumnLabel(i)+"\t\t");
             }
+            //STEP 5: Extract data from result set
             System.out.println("\n--------------------------------------------------------------------------------");
             while (results.next()) {
                 String groupName = results.getString(1);
@@ -88,14 +113,17 @@ public class CECS323JavaTermProject {
     }
     
     public static void listAllWritingGroups() {
+        System.out.println("You've selected: List all writing groups. \n");
         try {
             String st = "select GroupName, HeadWriter, YearFormed, Subject from WRITINGGROUP";
+            //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd);
             
+            //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
         }
@@ -110,6 +138,7 @@ public class CECS323JavaTermProject {
             String input = scan.next();
 
             String st = "SELECT GroupName, HeadWriter, YearFormed, Subject FROM WRITINGGROUP WHERE GroupName = ?";
+            //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             pstmt.setString(1, input);
 
@@ -117,6 +146,8 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd);
+            
+            //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
         }
@@ -128,12 +159,14 @@ public class CECS323JavaTermProject {
     public static void listAllPublishers() {
         try {
             String st = "select PublisherName, PublisherAddress, PublisherPhone, PublisherEmail from PUBLISHER";
+            //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd);
 
+            //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
         }
@@ -148,6 +181,7 @@ public class CECS323JavaTermProject {
             String input = scan.next();
 
             String st = "SELECT PublisherName, PublisherAddress, PublisherPhone, PublisherEmail FROM PUBLISHER WHERE PublisherName = ?";
+            //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             pstmt.setString(1, input);
 
@@ -155,6 +189,8 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd);
+            
+            //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
         }
