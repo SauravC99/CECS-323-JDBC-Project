@@ -1,5 +1,3 @@
-package Main;
-
 /*
 * CECS 323: JDBC Project
 * Rachel Pai (015555603)
@@ -8,8 +6,11 @@ package Main;
 * Due date: March 23, 2020
 * */
 
+package cecs.pkg323.jdbc.project;
+
 import java.util.Scanner;
 import java.sql.*;
+
 
 public class CECS323JavaTermProject {
     //  Database credentials
@@ -27,7 +28,7 @@ public class CECS323JavaTermProject {
     
     public static Scanner scan = new Scanner(System.in);
     // jdbc Connection
-    public static String dbURL = "jdbc:derby://localhost:1527/JDBC Project";
+    public static String dbURL = "jdbc:derby://localhost:1527/JDBC";
     //Step 1: Start the connection
     private static Connection conn = null;
     private static PreparedStatement pstmt = null;
@@ -36,7 +37,7 @@ public class CECS323JavaTermProject {
         //Start the connection to database
         try {
             //STEP 3: Open the connection
-            System.out.println("Connecting to database...");
+            System.out.println("Connecting to database..." + "\n");
             conn = DriverManager.getConnection(dbURL);
         }
         catch (SQLException se) {
@@ -102,7 +103,9 @@ public class CECS323JavaTermProject {
     }
     
     public static void printMenu() {
-        System.out.println("What would you like to do?");
+        System.out.println("-------------------------------------------------");
+        System.out.println("Menu | What would you like to do? ".toUpperCase());
+
         System.out.println("1. List all writing groups");
         System.out.println("2. Specify a writing group and list all the data");
         System.out.println("3. List all publishers");
@@ -113,30 +116,47 @@ public class CECS323JavaTermProject {
         System.out.println("8. Insert a new publisher and update books");
         System.out.println("9. Remove a book");
         System.out.println("0. Quit");
+        
+        System.out.println("-------------------------------------------------");
     }
     
     public static void printTable(ResultSet results, ResultSetMetaData rsmd, boolean check) {
+        String displayFormat = "%-50s";
+        String displayFormatFive = "%-50s %-50s %-50s %-50s %-50s";
+        String displayFormatFour = "%-50s %-50s %-50s %-50s"; 
+        
+        System.out.println("\n \\\\ Here are your results. \\\\ \n ");
+        
         try {
             int col = rsmd.getColumnCount();
             for (int i = 1; i <= col; i++) {
                 //print Column Names
-                System.out.print(rsmd.getColumnLabel(i)+"\t\t");
+                System.out.printf(displayFormat, rsmd.getColumnLabel(i));
             }
+     
             //STEP 5: Extract data from result set
-            System.out.println("\n--------------------------------------------------------------------------------");
+
             while (results.next()) {
                 String item1 = results.getString(1);
                 String item2 = results.getString(2);
                 String item3 = results.getString(3);
                 String item4 = results.getString(4);
+                
                 if (check) {
                     String item5 = results.getString(5);
-                    System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4 + "\t\t" + item5);
+                    //System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4 + "\t\t" + item5);
+                    System.out.printf(displayFormatFive, dispNull(item1), dispNull(item2), dispNull(item3), dispNull(item4), dispNull(item5));
+                    //System.out.printf(displayFormatFive, item1, item2, item3, item4, item5, "\n");
+                    //System.out.printf(displayFormatFive, "----------", "----------", "----------", "----------", "----------");
                 }
                 else {
                     System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4);
-                }
-            }
+                    System.out.printf(displayFormatFour, dispNull(item1), dispNull(item2), dispNull(item3), dispNull(item4));
+                   
+                    //System.out.printf(displayFormatFour, item1, item2, item3, item4, "\n");
+                    //System.out.printf(displayFormatFour, "----------", "----------", "----------", "----------");
+                }           
+            }  
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
@@ -159,6 +179,14 @@ public class CECS323JavaTermProject {
         return 0;
     }
     
+        public static String dispNull (String input) {
+        //because of short circuiting, if it's null, it never checks the length.
+        if (input == null || input.length() == 0)
+            return "N/A";
+        else
+            return input;
+    }
+    
     public static void listAllWritingGroups() {
         System.out.println("You've selected: List all Writing Groups. \n");
         try {
@@ -169,6 +197,7 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, false);
+            System.out.println(" ------------------------------------------------- \n");
             
             //STEP 6: Clean-up environment
             results.close();
@@ -194,6 +223,7 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, false);
+            System.out.println(" ------------------------------------------------- \n");
             
             //STEP 6: Clean-up environment
             results.close();
@@ -214,6 +244,7 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, false);
+            System.out.println(" ------------------------------------------------- \n");
 
             //STEP 6: Clean-up environment
             results.close();
@@ -239,6 +270,7 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, false);
+            System.out.println(" ------------------------------------------------- \n");
             
             //STEP 6: Clean-up environment
             results.close();
@@ -251,13 +283,14 @@ public class CECS323JavaTermProject {
     public static void listAllBookTitles() {
         System.out.println("You've selected: List all Book Titles. \n");
         try {
-            String st = "select GroupName, BookTitle, YearPublished, NumberPages, PublisherName from BOOK";
+            String st = "SELECT GroupName, BookTitle, YearPublished, NumberPages, PublisherName from BOOK";
             //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, true);
+            System.out.println(" ------------------------------------------------- \n");
             
             //STEP 6: Clean-up environment
             results.close();
@@ -284,6 +317,7 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, true);
+            System.out.println(" ------------------------------------------------- \n");
 
             //STEP 6: Clean-up environment
             results.close();
