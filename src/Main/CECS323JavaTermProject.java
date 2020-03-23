@@ -63,6 +63,9 @@ public class CECS323JavaTermProject {
         if (choice == 4) {
             listSpecificPublishers();
         }
+        if (choice == 5) {
+            listAllBookTitles();
+        }
     }
     
     public static void printMenu() {
@@ -200,6 +203,25 @@ public class CECS323JavaTermProject {
             ResultSetMetaData rsmd = results.getMetaData();
 
             printTable(results, rsmd, false);
+            
+            //STEP 6: Clean-up environment
+            results.close();
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+    public static void listAllBookTitles() {
+        System.out.println("You've selected: List all Book Titles. \n");
+        try {
+            String st = "select GroupName, BookTitle, YearPublished, NumberPages, PublisherName from BOOK";
+            //STEP 4: Execute a query
+            pstmt = conn.prepareStatement(st);
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+
+            printTable(results, rsmd, true);
             
             //STEP 6: Clean-up environment
             results.close();
