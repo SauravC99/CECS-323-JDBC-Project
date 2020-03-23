@@ -72,6 +72,12 @@ public class CECS323JavaTermProject {
         if (choice == 7) {
             addANewBook();
         }
+        if (choice == 8) {
+            
+        }
+        if (choice == 9) {
+            removeBook();
+        }
     }
     
     public static void printMenu() {
@@ -261,10 +267,9 @@ public class CECS323JavaTermProject {
             pstmt.close();
         }
         catch (SQLException sqlExcept) {
-        sqlExcept.printStackTrace();
+            sqlExcept.printStackTrace();
         }
     }
-
 
     public static void addANewBook() {
         System.out.println("You've selected: Add a new Book. \n");
@@ -310,7 +315,27 @@ public class CECS323JavaTermProject {
             pstmt.close();
         }
         catch (SQLException sqlExcept) {
-        sqlExcept.printStackTrace();
+            sqlExcept.printStackTrace();
+        }
+    }
+    
+    public static void removeBook() {
+        System.out.println("You've selected: Remove a book. \n");
+        try {
+            System.out.println("Which Book would you like to remove?");
+            String input = scan.next();
+            
+            System.out.println("Here are the books:");
+            String st = "select BookTitle from BOOK";
+            pstmt = conn.prepareStatement(st);
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+
+            printTable(results, rsmd, true);
+            
+        }
+        catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
         }
     }
 }    
