@@ -127,7 +127,7 @@ public class CECS323JavaTermProject {
     }
     
     public static void listAllWritingGroups() {
-        System.out.println("You've selected: List all writing groups. \n");
+        System.out.println("You've selected: List all Writing Groups. \n");
         try {
             String st = "select GroupName, HeadWriter, YearFormed, Subject from WRITINGGROUP";
             //STEP 4: Execute a query
@@ -147,6 +147,7 @@ public class CECS323JavaTermProject {
     }
     
     public static void listSpecificWritingGroups() {
+        System.out.println("You've selected: List a specific Writing Group. \n");
         try {
             System.out.println("Which Writing Group would you like to see?");
             String input = scan.next();
@@ -171,6 +172,7 @@ public class CECS323JavaTermProject {
     }
     
     public static void listAllPublishers() {
+        System.out.println("You've selected: List all Publishers. \n");
         try {
             String st = "select PublisherName, PublisherAddress, PublisherPhone, PublisherEmail from PUBLISHER";
             //STEP 4: Execute a query
@@ -190,6 +192,7 @@ public class CECS323JavaTermProject {
     }
     
     public static void listSpecificPublishers() {
+        System.out.println("You've selected: List a specific publisher. \n");
         try {
             System.out.println("Which Publisher would you like to see?");
             String input = scan.next();
