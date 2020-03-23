@@ -287,27 +287,24 @@ public class CECS323JavaTermProject {
             
             String yearPublished = year + "-" + month + "-" + day;
             
-            System.out.println("Enter number of pages: ");
-            Integer numberPages = in.nextInt();
-            
             System.out.println("Enter publisher name: ");
             String publisherName = in.nextLine();
+            
+            System.out.println("Enter number of pages: ");
+            Integer numberPages = in.nextInt();
             
             String st = "Insert into Book (groupName, bookTitle, yearPublished, numberPages, publisherName) values (?, ?, ?, ?, ?)";
             
             pstmt = conn.prepareStatement(st);
+            
             pstmt.setString(1, groupName);
             pstmt.setString(2, bookTitle);
             pstmt.setDate(3, java.sql.Date.valueOf(yearPublished));
             pstmt.setInt(4, numberPages);
             pstmt.setString(5, publisherName);
             
-            ResultSet results = pstmt.executeQuery();
-            ResultSetMetaData rsmd = results.getMetaData();
-                
-            printTable(results, rsmd, true);
-                
-            results.close();
+            pstmt.executeUpdate();
+        
             pstmt.close();
         }
         catch (SQLException sqlExcept) {
