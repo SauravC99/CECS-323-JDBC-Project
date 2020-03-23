@@ -51,33 +51,54 @@ public class CECS323JavaTermProject {
         printMenu();
         choice = scan.nextInt();
         
-        if (choice == 1) {
-            listAllWritingGroups();
+        while (choice != 0) {
+           if (choice == 1) {
+                listAllWritingGroups();
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 2) {
+                listSpecificWritingGroups();
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 3) {
+                listAllPublishers();
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 4) {
+                listSpecificPublishers();                
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 5) {
+                listAllBookTitles();                
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 6) {
+                listSpecifiedBook();                
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 7) {
+                addANewBook();                
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 8) {
+                insertPublisherAndUpdateBooks();                
+                printMenu();
+                choice = scan.nextInt();
+            }
+            if (choice == 9) {
+                removeBook();                
+                printMenu();
+                choice = scan.nextInt();
+            }
         }
-        if (choice == 2) {
-            listSpecificWritingGroups();
-        }
-        if (choice == 3) {
-            listAllPublishers();
-        }
-        if (choice == 4) {
-            listSpecificPublishers();
-        }
-        if (choice == 5) {
-            listAllBookTitles();
-        }
-        if (choice == 6) {
-            listSpecifiedBook();
-        }
-        if (choice == 7) {
-            addANewBook();
-        }
-        if (choice == 8) {
-            insertPublisherAndUpdateBooks();
-        }
-        if (choice == 9) {
-            removeBook();
-        }
+        System.out.println("Goodbye!");
     }
     
     public static void printMenu() {
@@ -91,6 +112,7 @@ public class CECS323JavaTermProject {
         System.out.println("7. Insert a new book");
         System.out.println("8. Insert a new publisher and update books");
         System.out.println("9. Remove a book");
+        System.out.println("0. Quit");
     }
     
     public static void printTable(ResultSet results, ResultSetMetaData rsmd, boolean check) {
