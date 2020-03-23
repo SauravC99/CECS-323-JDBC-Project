@@ -114,7 +114,6 @@ public class CECS323JavaTermProject {
                 else {
                     System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4);
                 }
-                
             }
         }
         catch (SQLException sqlExcept) {
@@ -255,6 +254,7 @@ public class CECS323JavaTermProject {
 
             String st = "SELECT groupName, bookTitle, yearPublished, numberPages, publisherName FROM Book WHERE BookTitle = ?";
 
+            //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             pstmt.setString(1, input);
 
@@ -263,6 +263,7 @@ public class CECS323JavaTermProject {
 
             printTable(results, rsmd, true);
 
+            //STEP 6: Clean-up environment
             results.close();
             pstmt.close();
         }
@@ -302,6 +303,7 @@ public class CECS323JavaTermProject {
             
             String st = "Insert into Book (groupName, bookTitle, yearPublished, numberPages, publisherName) values (?, ?, ?, ?, ?)";
             
+            //STEP 4: Execute a query
             pstmt = conn.prepareStatement(st);
             
             pstmt.setString(1, groupName);
@@ -312,6 +314,7 @@ public class CECS323JavaTermProject {
             
             pstmt.executeUpdate();
         
+            //STEP 6: Clean-up environment
             pstmt.close();
         }
         catch (SQLException sqlExcept) {
@@ -322,17 +325,50 @@ public class CECS323JavaTermProject {
     public static void removeBook() {
         System.out.println("You've selected: Remove a book. \n");
         try {
-            System.out.println("Which Book would you like to remove?");
-            String input = scan.next();
-            
             System.out.println("Here are the books:");
             String st = "select BookTitle from BOOK";
             pstmt = conn.prepareStatement(st);
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
-
-            printTable(results, rsmd, true);
+            int col = rsmd.getColumnCount();
+            for (int i = 1; i <= col; i++) {
+                System.out.print(rsmd.getColumnLabel(i)+"\t\t");
+            }
+            System.out.println("\n-------------------------------------------------");
+            while (results.next()) {
+                String bookTitles = results.getString(1);
+                System.out.println(bookTitles);
+            }
             
+            System.out.println("\nWhich Book would you like to remove?");
+            String input = scan.next();
+            
+            st = "delete from BOOK where BookTitle = ?";
+            
+            //STEP 4: Execute a query
+            pstmt = conn.prepareStatement(st);
+            pstmt.setString(1, input);
+            pstmt.executeUpdate();
+            
+            System.out.println("Removed " + input + "\n");
+            System.out.println("Here are the books now:");
+            st = "select BookTitle from BOOK";
+            pstmt = conn.prepareStatement(st);
+            results = pstmt.executeQuery();
+            rsmd = results.getMetaData();
+            col = rsmd.getColumnCount();
+            for (int i = 1; i <= col; i++) {
+                System.out.print(rsmd.getColumnLabel(i)+"\t\t");
+            }
+            System.out.println("\n-------------------------------------------------");
+            while (results.next()) {
+                String bookTitles = results.getString(1);
+                System.out.println(bookTitles);
+            }
+            
+            //STEP 6: Clean-up environment
+            results.close();
+            pstmt.close();
         }
         catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
