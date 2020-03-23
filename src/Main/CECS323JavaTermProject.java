@@ -45,21 +45,6 @@ public class CECS323JavaTermProject {
         } catch (Exception e) {
             //Handle errors for Class.forName
             e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (pstmt != null) {
-                    pstmt.close();
-                }
-            } catch (SQLException se2) {
-            }// nothing we can do
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
         }
         
         int choice;
@@ -93,7 +78,7 @@ public class CECS323JavaTermProject {
         System.out.println("9. Remove a book");
     }
     
-    public static void printTable(ResultSet results, ResultSetMetaData rsmd) {
+    public static void printTable(ResultSet results, ResultSetMetaData rsmd, boolean check) {
         try {
             int col = rsmd.getColumnCount();
             for (int i = 1; i <= col; i++) {
@@ -103,11 +88,18 @@ public class CECS323JavaTermProject {
             //STEP 5: Extract data from result set
             System.out.println("\n--------------------------------------------------------------------------------");
             while (results.next()) {
-                String groupName = results.getString(1);
-                String headWriter = results.getString(2);
-                String yearFormed = results.getString(3);
-                String subject = results.getString(4);
-                System.out.println(groupName + "\t\t" + headWriter + "\t\t" + yearFormed + "\t\t" + subject);
+                String item1 = results.getString(1);
+                String item2 = results.getString(2);
+                String item3 = results.getString(3);
+                String item4 = results.getString(4);
+                if (check) {
+                    String item5 = results.getString(5);
+                    System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4 + "\t\t" + item5);
+                }
+                else {
+                    System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4);
+                }
+                
             }
         }
         catch (SQLException sqlExcept) {
@@ -140,7 +132,7 @@ public class CECS323JavaTermProject {
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
-            printTable(results, rsmd);
+            printTable(results, rsmd, false);
             
             //STEP 6: Clean-up environment
             results.close();
@@ -164,7 +156,7 @@ public class CECS323JavaTermProject {
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
-            printTable(results, rsmd);
+            printTable(results, rsmd, false);
             
             //STEP 6: Clean-up environment
             results.close();
@@ -183,7 +175,7 @@ public class CECS323JavaTermProject {
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
-            printTable(results, rsmd);
+            printTable(results, rsmd, false);
 
             //STEP 6: Clean-up environment
             results.close();
@@ -207,7 +199,7 @@ public class CECS323JavaTermProject {
             ResultSet results = pstmt.executeQuery();
             ResultSetMetaData rsmd = results.getMetaData();
 
-            printTable(results, rsmd);
+            printTable(results, rsmd, false);
             
             //STEP 6: Clean-up environment
             results.close();
