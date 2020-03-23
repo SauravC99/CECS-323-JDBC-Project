@@ -66,6 +66,9 @@ public class CECS323JavaTermProject {
         if (choice == 5) {
             listAllBookTitles();
         }
+        if (choice == 6) {
+            listSpecifiedBook();
+        }
     }
     
     public static void printMenu() {
@@ -228,6 +231,29 @@ public class CECS323JavaTermProject {
             pstmt.close();
         }
         catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+    
+    public static void listSpecifiedBook() {
+            try {
+                System.out.println("Which book would you like to see?");
+                String input = scan.next();
+                
+                String st = "SELECT groupName, bookTitle, yearPublished, numberPages, publisherName FROM Book WHERE BookTitle = ?";
+                
+                pstmt = conn.prepareStatement(st);
+                pstmt.setString(1, input);
+                
+                ResultSet results = pstmt.executeQuery();
+                ResultSetMetaData rsmd = results.getMetaData();
+                
+                printTable(results, rsmd, true);
+                
+                results.close();
+                pstmt.close();
+            }
+            catch (SQLException sqlExcept) {
             sqlExcept.printStackTrace();
         }
     }
