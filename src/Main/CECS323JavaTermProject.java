@@ -6,7 +6,7 @@
 * Due date: March 23, 2020
 * */
 
-package cecs.pkg323.jdbc.project;
+package Main;
 
 import java.util.Scanner;
 import java.sql.*;
@@ -28,7 +28,7 @@ public class CECS323JavaTermProject {
     
     public static Scanner scan = new Scanner(System.in);
     // jdbc Connection
-    public static String dbURL = "jdbc:derby://localhost:1527/JDBC";
+    public static String dbURL = "jdbc:derby://localhost:1527/JDBC Project";
     //Step 1: Start the connection
     private static Connection conn = null;
     private static PreparedStatement pstmt = null;
@@ -152,9 +152,9 @@ public class CECS323JavaTermProject {
                     //System.out.printf(displayFormatFive, "----------", "----------", "----------", "----------", "----------");
                 }
                 else {
-                    System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4);
+                    //System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4);
                     System.out.printf(displayFormatFour, dispNull(item1), dispNull(item2), dispNull(item3), dispNull(item4));
-                   
+                    System.out.println("\n");
                     //System.out.printf(displayFormatFour, item1, item2, item3, item4, "\n");
                     //System.out.printf(displayFormatFour, "----------", "----------", "----------", "----------");
                 }           
