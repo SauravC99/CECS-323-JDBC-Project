@@ -66,6 +66,12 @@ public class CECS323JavaTermProject {
         if (choice == 5) {
             listAllBookTitles();
         }
+        if (choice == 6) {
+            listSpecifiedBook();
+        }
+        if (choice == 7) {
+            addANewBook();
+        }
     }
     
     public static void printMenu() {
@@ -234,4 +240,78 @@ public class CECS323JavaTermProject {
             sqlExcept.printStackTrace();
         }
     }
-}
+    
+    public static void listSpecifiedBook() {
+            try {
+                System.out.println("Which book would you like to see?");
+                String input = scan.next();
+                
+                String st = "SELECT groupName, bookTitle, yearPublished, numberPages, publisherName FROM Book WHERE BookTitle = ?";
+                
+                pstmt = conn.prepareStatement(st);
+                pstmt.setString(1, input);
+                
+                ResultSet results = pstmt.executeQuery();
+                ResultSetMetaData rsmd = results.getMetaData();
+                
+                printTable(results, rsmd, true);
+                
+                results.close();
+                pstmt.close();
+            }
+            catch (SQLException sqlExcept) {
+            sqlExcept.printStackTrace();
+        }
+    }
+
+
+    public static void addANewBook() {
+        try {
+            Scanner in = new Scanner(System.in);
+            
+            System.out.println("You've chosen: Add a new book.");
+            System.out.println("Enter group name: ");
+            String groupName = in.nextLine();
+            
+            System.out.println("Enter book title: ");
+            String bookTitle = in.nextLine();
+            
+            System.out.println("Enter year published: ");
+            String year = in.nextLine();
+            
+            System.out.println("Enter day published: ");
+            String day = in.nextLine();
+            
+            System.out.println("Enter month published: ");
+            String month = in.nextLine();
+            
+            String yearPublished = year + "-" + month + "-" + day;
+            
+            System.out.println("Enter number of pages: ");
+            Integer numberPages = in.nextInt();
+            
+            System.out.println("Enter publisher name: ");
+            String publisherName = in.nextLine();
+            
+            String st = "Insert into Book (groupName, bookTitle, yearPublished, numberPages, publisherName) values (?, ?, ?, ?, ?)";
+            
+            pstmt = conn.prepareStatement(st);
+            pstmt.setString(1, groupName);
+            pstmt.setString(2, bookTitle);
+            pstmt.setDate(3, java.sql.Date.valueOf(yearPublished));
+            pstmt.setInt(4, numberPages);
+            pstmt.setString(5, publisherName);
+            
+            ResultSet results = pstmt.executeQuery();
+            ResultSetMetaData rsmd = results.getMetaData();
+                
+            printTable(results, rsmd, true);
+                
+            results.close();
+            pstmt.close();
+        }
+        catch (SQLException sqlExcept) {
+        sqlExcept.printStackTrace();
+        }
+    }
+}    
