@@ -302,7 +302,7 @@ public class CECS323JavaTermProject {
             System.out.println("You've chosen: Add a new book.");
             System.out.println("Enter group name: ");
             String groupName = in.nextLine();
-            
+
             System.out.println("Enter book title: ");
             String bookTitle = in.nextLine();
             
