@@ -133,6 +133,7 @@ public class CECS323JavaTermProject {
                 //print Column Names
                 System.out.printf(displayFormat, rsmd.getColumnLabel(i));
             }
+            System.out.println("\n");
      
             //STEP 5: Extract data from result set
 
@@ -146,6 +147,7 @@ public class CECS323JavaTermProject {
                     String item5 = results.getString(5);
                     //System.out.println(item1 + "\t\t" + item2 + "\t\t" + item3 + "\t\t" + item4 + "\t\t" + item5);
                     System.out.printf(displayFormatFive, dispNull(item1), dispNull(item2), dispNull(item3), dispNull(item4), dispNull(item5));
+                    System.out.println("\n");
                     //System.out.printf(displayFormatFive, item1, item2, item3, item4, item5, "\n");
                     //System.out.printf(displayFormatFive, "----------", "----------", "----------", "----------", "----------");
                 }
